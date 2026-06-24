@@ -32,6 +32,8 @@ backstage:
 
 postgresql:
   enabled: true
+  image:
+    tag: "15.7.0-debian-12-r9"
   auth:
     username: backstage
     database: backstage
