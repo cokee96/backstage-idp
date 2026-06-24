@@ -30,3 +30,9 @@ spec:
         duration: 10s
         factor: 2
         maxDuration: 5m
+
+  ignoreDifferences:
+    - group: apps
+      kind: Deployment
+      jsonPointers:
+        - /status/terminatingReplicas
