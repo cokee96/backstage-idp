@@ -6,10 +6,12 @@ organization:
   name: "cokee96"
 
 backend:
-  baseUrl: http://localhost:7007
+  baseUrl: http://backstage.backstage.svc.cluster.local:7007
   listen:
     port: 7007
     host: 0.0.0.0
+  auth:
+    dangerouslyDisableDefaultAuthPolicy: true
   csp:
     connect-src: ["'self'", 'http:', 'https:']
   cors:
