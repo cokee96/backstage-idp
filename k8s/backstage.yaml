@@ -34,6 +34,8 @@ spec:
             - name: http
               containerPort: 7007
           env:
+            - name: NODE_OPTIONS
+              value: "--require /app/patches/disable-compression.js"
             - name: POSTGRES_HOST
               value: "backstage-postgresql"
             - name: POSTGRES_PORT
@@ -64,6 +66,8 @@ spec:
             - name: app-config
               mountPath: /app/app-config.local.yaml
               subPath: app-config.yaml
+            - name: patches
+              mountPath: /app/patches
           resources:
             requests:
               cpu: 200m
@@ -89,6 +93,9 @@ spec:
         - name: app-config
           configMap:
             name: backstage-app-config
+        - name: patches
+          configMap:
+            name: backstage-patches
 ---
 apiVersion: v1
 kind: Service
