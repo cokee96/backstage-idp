@@ -8,20 +8,10 @@ metadata:
 spec:
   project: idp
 
-  sources:
-    - repoURL: https://backstage.github.io/charts
-      chart: backstage
-      targetRevision: "1.9.6"
-      helm:
-        releaseName: backstage
-        valueFiles:
-          - $values/helm-values/backstage/base.yaml
-    - repoURL: https://github.com/cokee96/backstage-idp
-      targetRevision: HEAD
-      ref: values
-    - repoURL: https://github.com/cokee96/backstage-idp
-      targetRevision: HEAD
-      path: k8s
+  source:
+    repoURL: https://github.com/cokee96/backstage-idp
+    targetRevision: HEAD
+    path: k8s
 
   destination:
     server: https://kubernetes.default.svc
