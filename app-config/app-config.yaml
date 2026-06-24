@@ -45,11 +45,14 @@ catalog:
   rules:
     - allow: [Component, System, API, Resource, Location, Template, User, Group]
   locations:
-    # Catálogo principal — registra todos los componentes
     - type: url
       target: https://github.com/cokee96/backstage-idp/blob/main/catalog/all-components.yaml
       rules:
         - allow: [Component, System, Template, Location, User, Group]
+    - type: url
+      target: https://github.com/cokee96/backstage-idp/blob/main/templates/new-microservice/template.yaml
+      rules:
+        - allow: [Template]
 
 kubernetes:
   serviceLocatorMethod:

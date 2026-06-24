@@ -4,4 +4,4 @@ metadata:
   name: templates
 spec:
   targets:
-    - ../templates/new-microservice/template.yaml
+    - https://github.com/cokee96/backstage-idp/blob/main/templates/new-microservice/template.yaml
