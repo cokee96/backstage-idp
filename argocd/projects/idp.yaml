@@ -1,0 +1,19 @@
+apiVersion: argoproj.io/v1alpha1
+kind: AppProject
+metadata:
+  name: idp
+  namespace: argocd
+spec:
+  description: "Internal Developer Platform — Backstage"
+  sourceRepos:
+    - https://github.com/cokee96/backstage-idp
+    - https://backstage.github.io/charts
+  destinations:
+    - server: https://kubernetes.default.svc
+      namespace: backstage
+  clusterResourceWhitelist:
+    - group: "*"
+      kind: "*"
+  namespaceResourceWhitelist:
+    - group: "*"
+      kind: "*"

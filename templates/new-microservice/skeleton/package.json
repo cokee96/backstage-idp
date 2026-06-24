@@ -1,0 +1,9 @@
+{
+  "name": "${{ values.name }}",
+  "version": "1.0.0",
+  "description": "${{ values.description }}",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  }
+}

@@ -1,0 +1,76 @@
+app:
+  title: "Developer Platform — cokee96"
+  baseUrl: http://localhost:7007
+
+organization:
+  name: "cokee96"
+
+backend:
+  baseUrl: http://localhost:7007
+  listen:
+    port: 7007
+    host: 0.0.0.0
+  csp:
+    connect-src: ["'self'", 'http:', 'https:']
+  cors:
+    origin: http://localhost:7007
+    methods: [GET, HEAD, PATCH, POST, PUT, DELETE]
+    credentials: true
+  database:
+    client: pg
+    connection:
+      host: ${POSTGRES_HOST}
+      port: ${POSTGRES_PORT}
+      user: ${POSTGRES_USER}
+      password: ${POSTGRES_PASSWORD}
+
+integrations:
+  github:
+    - host: github.com
+      token: ${GITHUB_TOKEN}
+
+auth:
+  environment: development
+  providers:
+    guest:
+      dangerouslyAllowOutsideDevelopment: true
+
+scaffolder:
+  defaultAuthor:
+    name: "Álvaro Alonso"
+    email: "alvaroalonsogonzalez96@gmail.com"
+  defaultCommitMessage: "Initial scaffold"
+
+catalog:
+  rules:
+    - allow: [Component, System, API, Resource, Location, Template, User, Group]
+  locations:
+    # Catálogo principal — registra todos los componentes
+    - type: url
+      target: https://github.com/cokee96/backstage-idp/blob/main/catalog/all-components.yaml
+      rules:
+        - allow: [Component, System, Template, Location, User, Group]
+
+kubernetes:
+  serviceLocatorMethod:
+    type: multiTenant
+  clusterLocatorMethods:
+    - type: config
+      clusters:
+        - url: https://kubernetes.default.svc
+          name: demo-cluster
+          authProvider: serviceAccount
+          skipTLSVerify: true
+          skipMetricsLookup: false
+          serviceAccountToken: ${K8S_SA_TOKEN}
+
+argocd:
+  username: admin
+  password: ${ARGOCD_PASSWORD}
+  appLocatorMethods:
+    - type: config
+      instances:
+        - name: demo-cluster
+          url: https://argocd-server.argocd.svc.cluster.local
+          username: admin
+          password: ${ARGOCD_PASSWORD}

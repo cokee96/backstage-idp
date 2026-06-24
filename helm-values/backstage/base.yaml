@@ -1,0 +1,44 @@
+backstage:
+  image:
+    registry: ghcr.io
+    repository: backstage/backstage
+    tag: "latest"
+    pullPolicy: Always
+
+  resources:
+    requests:
+      cpu: 200m
+      memory: 512Mi
+    limits:
+      cpu: 1000m
+      memory: 1Gi
+
+  # app-config.yaml montado desde ConfigMap (ver app-config/app-config.yaml)
+  extraAppConfig:
+    - filename: app-config.yaml
+      configMapRef: backstage-app-config
+
+  # Variables de entorno — valores reales inyectados desde Secrets
+  extraEnvVarsSecrets:
+    - backstage-secrets
+
+  extraEnvVars:
+    - name: POSTGRES_HOST
+      value: "backstage-postgresql"
+    - name: POSTGRES_PORT
+      value: "5432"
+    - name: POSTGRES_USER
+      value: "backstage"
+
+postgresql:
+  enabled: true
+  auth:
+    username: backstage
+    database: backstage
+    existingSecret: backstage-postgresql-secret
+    secretKeys:
+      userPasswordKey: postgres-password
+
+serviceAccount:
+  create: true
+  name: backstage

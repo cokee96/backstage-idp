@@ -1,0 +1,26 @@
+apiVersion: backstage.io/v1alpha1
+kind: System
+metadata:
+  name: observability
+  description: "GitOps observability stack — Prometheus, Grafana, Loki"
+  tags: [monitoring, gitops]
+spec:
+  owner: user:alvaro
+---
+apiVersion: backstage.io/v1alpha1
+kind: System
+metadata:
+  name: secrets-management
+  description: "HashiCorp Vault + External Secrets Operator"
+  tags: [security, vault]
+spec:
+  owner: user:alvaro
+---
+apiVersion: backstage.io/v1alpha1
+kind: System
+metadata:
+  name: infrastructure
+  description: "Terraform modules for Azure and Kubernetes"
+  tags: [iac, terraform]
+spec:
+  owner: user:alvaro

@@ -1,0 +1,101 @@
+apiVersion: scaffolder.backstage.io/v1beta3
+kind: Template
+metadata:
+  name: new-microservice
+  title: "Nuevo microservicio Node.js"
+  description: >
+    Crea un repositorio GitHub con un microservicio Node.js listo para producción:
+    incluye Dockerfile, manifiestos Kubernetes, métricas Prometheus y una ArgoCD
+    Application que lo despliega automáticamente en el cluster.
+  tags:
+    - nodejs
+    - kubernetes
+    - gitops
+    - recommended
+
+spec:
+  owner: user:alvaro
+  type: service
+
+  # ── Parámetros del formulario ─────────────────────────────────────────────
+  parameters:
+    - title: "Información del servicio"
+      required: [name, description, port]
+      properties:
+        name:
+          title: "Nombre del servicio"
+          type: string
+          description: "Solo letras minúsculas, números y guiones (ej: mi-api)"
+          pattern: '^[a-z][a-z0-9-]*$'
+          ui:autofocus: true
+        description:
+          title: "Descripción"
+          type: string
+          description: "Una línea explicando qué hace el servicio"
+        port:
+          title: "Puerto"
+          type: integer
+          default: 8080
+          description: "Puerto en el que escucha el servicio"
+        namespace:
+          title: "Namespace Kubernetes"
+          type: string
+          default: "default"
+          description: "Namespace donde se desplegará"
+
+    - title: "Repositorio GitHub"
+      required: [repoOwner]
+      properties:
+        repoOwner:
+          title: "Propietario del repo"
+          type: string
+          default: "cokee96"
+          ui:field: OwnerPicker
+          ui:options:
+            catalogFilter:
+              kind: User
+        visibility:
+          title: "Visibilidad"
+          type: string
+          default: public
+          enum: [public, private]
+
+  # ── Pasos de ejecución ────────────────────────────────────────────────────
+  steps:
+    - id: fetch-template
+      name: "Generar ficheros del servicio"
+      action: fetch:template
+      input:
+        url: ./skeleton
+        values:
+          name: ${{ parameters.name }}
+          description: ${{ parameters.description }}
+          port: ${{ parameters.port }}
+          namespace: ${{ parameters.namespace }}
+          owner: ${{ parameters.repoOwner }}
+
+    - id: publish
+      name: "Crear repositorio en GitHub"
+      action: publish:github
+      input:
+        allowedHosts: [github.com]
+        description: ${{ parameters.description }}
+        repoUrl: github.com?owner=${{ parameters.repoOwner }}&repo=${{ parameters.name }}
+        defaultBranch: main
+        repoVisibility: ${{ parameters.visibility }}
+
+    - id: register
+      name: "Registrar en el catálogo"
+      action: catalog:register
+      input:
+        repoContentsUrl: ${{ steps.publish.output.repoContentsUrl }}
+        catalogInfoPath: /catalog-info.yaml
+
+  # ── Output: links útiles tras la creación ────────────────────────────────
+  output:
+    links:
+      - title: "Repositorio GitHub"
+        url: ${{ steps.publish.output.remoteUrl }}
+      - title: "Ver en el catálogo"
+        icon: catalog
+        entityRef: ${{ steps.register.output.entityRef }}

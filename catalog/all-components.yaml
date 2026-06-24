@@ -1,0 +1,10 @@
+apiVersion: backstage.io/v1alpha1
+kind: Location
+metadata:
+  name: cokee96-catalog
+  description: "All components in the cokee96 portfolio"
+spec:
+  targets:
+    - ./systems.yaml
+    - ./components.yaml
+    - ./templates.yaml

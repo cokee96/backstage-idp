@@ -1,0 +1,73 @@
+apiVersion: backstage.io/v1alpha1
+kind: Component
+metadata:
+  name: demo-app
+  description: "Instrumented Node.js microservice with Prometheus metrics"
+  tags: [nodejs, kubernetes, prometheus]
+  annotations:
+    github.com/project-slug: cokee96/demo-app
+    argocd/app-name: demo-app
+    backstage.io/kubernetes-id: demo-app
+spec:
+  type: service
+  lifecycle: production
+  owner: user:alvaro
+  system: observability
+---
+apiVersion: backstage.io/v1alpha1
+kind: Component
+metadata:
+  name: observability-stack
+  description: "ArgoCD + Prometheus + Grafana + Loki — GitOps observability"
+  tags: [argocd, prometheus, grafana, loki]
+  annotations:
+    github.com/project-slug: cokee96/observability-stack
+    argocd/app-name: prometheus-stack
+spec:
+  type: service
+  lifecycle: production
+  owner: user:alvaro
+  system: observability
+---
+apiVersion: backstage.io/v1alpha1
+kind: Component
+metadata:
+  name: vault-secrets
+  description: "HashiCorp Vault + External Secrets Operator"
+  tags: [vault, security, kubernetes]
+  annotations:
+    github.com/project-slug: cokee96/vault-secrets
+    argocd/app-name: vault
+spec:
+  type: service
+  lifecycle: production
+  owner: user:alvaro
+  system: secrets-management
+---
+apiVersion: backstage.io/v1alpha1
+kind: Component
+metadata:
+  name: terraform-azure-modules
+  description: "17 production-grade Terraform modules for Azure"
+  tags: [terraform, azure, iac]
+  annotations:
+    github.com/project-slug: cokee96/terraform-azure-modules
+spec:
+  type: library
+  lifecycle: production
+  owner: user:alvaro
+  system: infrastructure
+---
+apiVersion: backstage.io/v1alpha1
+kind: Component
+metadata:
+  name: kubernetes-modules
+  description: "14 Terraform modules for Kubernetes + Ansible on-premise"
+  tags: [terraform, kubernetes, ansible, iac]
+  annotations:
+    github.com/project-slug: cokee96/kubernetes-modules
+spec:
+  type: library
+  lifecycle: production
+  owner: user:alvaro
+  system: infrastructure
