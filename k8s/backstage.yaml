@@ -35,7 +35,7 @@ spec:
               containerPort: 7007
           env:
             - name: NODE_OPTIONS
-              value: "--require /app/patches/disable-compression.js"
+              value: "--no-node-snapshot --require /app/patches/disable-compression.js"
             - name: POSTGRES_HOST
               value: "backstage-postgresql"
             - name: POSTGRES_PORT
