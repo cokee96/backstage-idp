@@ -2,7 +2,7 @@ apiVersion: backstage.io/v1alpha1
 kind: Component
 metadata:
   name: demo-app
-  description: "Instrumented Node.js microservice with Prometheus metrics"
+  description: "Instrumented Node.js microservice with live Madrid weather and Prometheus metrics"
   tags: [nodejs, kubernetes, prometheus]
   annotations:
     github.com/project-slug: cokee96/demo-app
@@ -13,6 +13,8 @@ spec:
   lifecycle: production
   owner: user:alvaro
   system: observability
+  providesApis:
+    - weather-api
 ---
 apiVersion: backstage.io/v1alpha1
 kind: Component

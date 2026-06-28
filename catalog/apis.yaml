@@ -1,0 +1,83 @@
+apiVersion: backstage.io/v1alpha1
+kind: API
+metadata:
+  name: weather-api
+  description: "Live Madrid weather data from Open-Meteo — temperature, humidity, wind, precipitation"
+  tags: [rest, weather, open-meteo]
+  links:
+    - url: https://open-meteo.com/en/docs
+      title: Open-Meteo Documentation
+      icon: docs
+spec:
+  type: openapi
+  lifecycle: production
+  owner: user:alvaro
+  system: observability
+  definition: |
+    openapi: "3.0.0"
+    info:
+      title: Weather API
+      description: Live Madrid weather data served by demo-app
+      version: "2.0.0"
+    servers:
+      - url: http://localhost:8080
+        description: Local (port-forward)
+    paths:
+      /weather:
+        get:
+          summary: Current weather and hourly forecast for Madrid
+          description: Returns current conditions and hourly forecast from Open-Meteo API (cached 5 min)
+          responses:
+            "200":
+              description: Weather data
+              content:
+                application/json:
+                  schema:
+                    type: object
+                    properties:
+                      current:
+                        type: object
+                        properties:
+                          temperature:
+                            type: number
+                            example: 32.7
+                          humidity:
+                            type: number
+                            example: 18
+                          wind_speed:
+                            type: number
+                            example: 10.4
+                          condition:
+                            type: string
+                            example: "Nublado"
+                          emoji:
+                            type: string
+                            example: "☁️"
+                      hourly:
+                        type: array
+                        items:
+                          type: object
+      /healthz:
+        get:
+          summary: Health check
+          responses:
+            "200":
+              description: Service healthy
+              content:
+                application/json:
+                  schema:
+                    type: object
+                    properties:
+                      status:
+                        type: string
+                        example: ok
+      /metrics:
+        get:
+          summary: Prometheus metrics
+          responses:
+            "200":
+              description: Prometheus text format metrics
+              content:
+                text/plain:
+                  schema:
+                    type: string

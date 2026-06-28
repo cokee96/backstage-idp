@@ -7,4 +7,5 @@ spec:
   targets:
     - ./systems.yaml
     - ./components.yaml
+    - ./apis.yaml
     - ./templates.yaml
